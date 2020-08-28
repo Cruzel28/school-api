@@ -30,4 +30,6 @@ Route.group(()=> {
   Route.get('/subjects/:id','SubjectController.show')
   Route.post('/subjects','SubjectController.store')
 
+  Route.get('/students','StudentController.index')
+
 }).prefix('api/v1')
