@@ -38,5 +38,10 @@ Route.group(()=> {
   Route.get('/enrollments/:id','EnrollmentController.show')
   Route.post('/enrollments','EnrollmentController.store')
 
+  Route.get('/groups','GroupController.index')
+  Route.get('/groups/:id','GroupController.show')
+  Route.post('/groups','GroupController.store')
+
+
 
 }).prefix('api/v1')
