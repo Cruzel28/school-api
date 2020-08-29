@@ -54,9 +54,9 @@ class StudentController {
   
         const students = await Database
               .table('students')
-              .insert({first_name, last_name, email,password,group_id})
+              .insert({first_name, last_name, email,password:hashPassword,group_id})
   
-        return {status: 200, error: undefined, data: {first_name,last_name,email,password,group_id}}
+        return {status: 200, error: undefined, data: {first_name,last_name,email,password:hashPassword,group_id}}
       }
 
 
