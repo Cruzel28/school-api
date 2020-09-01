@@ -16,8 +16,11 @@ class Subject extends Model {
     }
 
     teacher(){
-        return this.belongsTo('App/Models/Teacher')
-    }
+        return this.belongsTo('App/Models/Teacher') //เอาเขามาจอย
+    }  
+    
+
+
 }
 
 module.exports = Subject

@@ -16,7 +16,7 @@ class Teacher extends Model {
     }
 
     subject(){
-        return this.hasMany('App/Models/Subject')
+        return this.hasMany('App/Models/Subject') //ไปจอยกับเขา
     }
 }
 
