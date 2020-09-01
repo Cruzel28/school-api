@@ -22,17 +22,22 @@ Route.get('/', () => {
 
 Route.group(()=> {
   //api route start here
-  Route.get('/teachers','TeacherController.index')
-  Route.get('/teachers/:id','TeacherController.show')
-  Route.post('/teachers','TeacherController.store')
+  Route.resource('/teachers','TeacherController')
 
-  Route.get('/subjects','SubjectController.index')
-  Route.get('/subjects/:id','SubjectController.show')
-  Route.post('/subjects','SubjectController.store')
+  // Route.get('/teachers','TeacherController.index')
+  // Route.get('/teachers/:id','TeacherController.show')
 
-  Route.get('/students','StudentController.index')
-  Route.get('/students/:id','StudentController.show')
-  Route.post('/students','StudentController.store')
+  // Route.post('/teachers','TeacherController.store')
+
+  // Route.put('/teachers/:id','TeacherController.update')
+  // Route.patch('/teachers/:id','TeacherController.update')
+
+  // Route.delete('/teachers/:id','TeacherController.destroy')
+
+  Route.resource('/subjects','SubjectController')
+  
+  Route.resource('/students','StudentController')
+  
 
   Route.get('/enrollments','EnrollmentController.index')
   Route.get('/enrollments/:id','EnrollmentController.show')
