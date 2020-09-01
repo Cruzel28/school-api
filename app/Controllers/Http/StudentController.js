@@ -13,11 +13,18 @@ function numberTypeParamValidator(number){
     return {}
   }
 class StudentController {
-    async index(){
-        const students = await Database.table('students')
+    async index({request}){
+      const {references = undefined} = request.qs
+      const students = Student.query()
+
+      if (references){
+        const extractedReferences = references.split(",")
+        students.with(extractedReferences)
+        }
+
         return {status: 200, 
                 error: undefined, 
-               data: students || {}}
+               data: students.fetch()}
       }
 
       async show ({request}){

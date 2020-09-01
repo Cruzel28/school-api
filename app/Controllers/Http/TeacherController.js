@@ -20,7 +20,7 @@ class TeacherController {
 
       if (references){
         const extractedReferences = references.split(",")
-        subjects.with(extractedReferences)
+        teachers.with(extractedReferences)
       return {status: 200, 
         error: undefined,
          data: await teachers.fetch()}
@@ -29,7 +29,7 @@ class TeacherController {
 
     async show ({request}){
       const { id } = request.body
-        const teacher = await  Teacher.find(id)
+        const teacher = await Teacher.all(id)
 
      const validatedValue = numberTypeParamValidator(id)
      
@@ -38,6 +38,7 @@ class TeacherController {
       error: validatedValue.error, 
       data: undefined}
       
+
       return {status: 200, 
         error: undefined, 
         data: teacher || {}}
