@@ -38,14 +38,10 @@ Route.group(()=> {
   
   Route.resource('/students','StudentController')
   
+  Route.resource('/enrollments','EnrollmentController')
 
-  Route.get('/enrollments','EnrollmentController.index')
-  Route.get('/enrollments/:id','EnrollmentController.show')
-  Route.post('/enrollments','EnrollmentController.store')
+  Route.resource('/groups','GroupController')
 
-  Route.get('/groups','GroupController.index')
-  Route.get('/groups/:id','GroupController.show')
-  Route.post('/groups','GroupController.store')
 
 
 
