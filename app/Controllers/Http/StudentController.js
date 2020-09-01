@@ -59,7 +59,39 @@ class StudentController {
         return {status: 200, error: undefined, data: {first_name,last_name,email,password:hashPassword,group_id}}
       }
 
+      async update({request}){
+        const {body,params} = request
+        const {id} = params
+        const {first_name,last_name,email,group_id} = body
+       
+  
+       const studentID = await Database
+        .table('students')
+        .where({student_id: id})
+        .update({first_name,last_name,email,group_id})
+        
+  
+        const student = await Database
+        .table('students')
+        .where({student_id: studentID}) 
+        .first()
+  
+        return {status: 200, 
+          error: undefined, 
+          data: {first_name,last_name,email,group_id}}
+      }
 
+      async destroy ({request}){
+        const {id} = request.params
+  
+        const deletedStudent = await Database
+        .table('students')
+        .where({student_id:id})
+        .delete()
+  
+        return {status: 200, error: undefined, data: {message: 'success'}}
+      }
+  
   
 }
 
