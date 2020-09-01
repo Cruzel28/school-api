@@ -1,6 +1,7 @@
 'use strict'
 
 const Database = use('Database')
+const Validator = use('Validator')
 
 function numberTypeParamValidator(number){
     if (Number.isNaN(parseInt(number)))
@@ -43,15 +44,13 @@ class GroupController {
       async store({request}){
         const { name } = request.body
         
+        const rules = { name:'required' }
   
-        const missingKeys = []
-        if(!name) missingKeys.push('name')
-       
+        const validation = await Validator.validate(request.body,rules)
   
-        if(missingKeys.length)
-           return {status: 422, 
-            error: `${missingKeys} is missing.`, 
-            data: undefined}
+        if(validation.fails())
+        return {status: 422, error: validation.messages(), data: undefined}
+  
   
         const group = await Database
               .table('groups')
@@ -61,6 +60,8 @@ class GroupController {
                 error: undefined, 
                 data: {name}}
       } 
+
+      
 }
 
 module.exports = GroupController
