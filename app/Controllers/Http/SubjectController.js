@@ -53,6 +53,38 @@ class SubjectController {
                 data: {title,teacher_id}}
       }
 
+      async update({request}){
+        const {body,params} = request
+        const {id} = params
+        const {title,teacher_id} = body
+  
+       const subjectID = await Database
+        .table('subjects')
+        .where({subject_id: id})
+        .update({title,teacher_id})
+        
+  
+        const subject = await Database
+        .table('subjects')
+        .where({subject_id: subjectID})
+        .first()
+  
+        return {status: 200, error: undefined, 
+          data: {title,teacher_id}}
+      }
+
+      async destroy ({request}){
+        const {id} = request.params
+  
+        const deletedSubject = await Database
+        .table('subjects')
+        .where({subject_id:id})
+        .delete()
+  
+        return {status: 200, error: undefined, data: {message: 'success'}}
+      }
+  
+
 }
 
 module.exports = SubjectController
