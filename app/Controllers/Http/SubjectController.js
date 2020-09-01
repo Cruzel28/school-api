@@ -51,35 +51,29 @@ class SubjectController {
         // .where('subject_id',id)
         // .first()
   
-        return {status: 200, error: undefined, data: subjects || {}}
+        return {status: 200, 
+          error: undefined, 
+          data: subject || {}}
        
       }
     
 
-      async showTeacher({request}){
-        const {id} = request.params
-        const subjects = await Database
-        .select('*')
-        .from('subjects')
-        .where('subject_id',id)
-        .innerjoin('teachers','subjects.teacher_id','teachers.teacher_id')
-        .first()
+      // async showTeacher({request}){
+      //   const {id} = request.params
+      //   const subjects = await Database
+      //   .select('*')
+      //   .from('subjects')
+      //   .where('subject_id',id)
+      //   .innerjoin('teachers','subjects.teacher_id','teachers.teacher_id')
+      //   .first()
   
-        return {status: 200, error: undefined, data: subjects || {}}
-      }
+      //   return {status: 200, error: undefined, data: subjects || {}}
+      // }
 
       // async store({request}){
       //   const { title, teacher_id} = request.body
   
-      //   const rules = {
-      //     title:'required|unique:teachers,title',
-      //     teacher_id:'required',
-      //   }
-  
-      //   const validation = await Validator.validate(request.body,rules)
-  
-      //   if(validation.fails())
-      //   return {status: 422, error: validation.messages(), data: undefined}
+      //  
   
       //   const subjects = await Database
       //         .table('subjects')
@@ -92,16 +86,23 @@ class SubjectController {
 
       async store({request}){
         const {title,teacher_id}= request.body
-        const subject = new Subject()
-
-       subject.title = title
-       subject.teacher_id = teacher_id
-
-       await subject.save()
-
-       return {status: 200, 
+        const subject = await Subject.create({title,teacher_id})
+         
+        const rules = {
+          title:'required|unique:teachers,title',
+          teacher_id:'required',
+        }
+  
+        const validation = await Validator.validate(request.body,rules)
+  
+        if(validation.fails())
+               return {status: 422, 
+                error: validation.messages(), 
+                data: undefined}
+       
+        return {status: 200, 
                   error: undefined, 
-                  data: {title,teacher_id}}
+                  data: subject}
      }
 
 
