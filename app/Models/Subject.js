@@ -17,7 +17,12 @@ class Subject extends Model {
 
     teacher(){
         return this.belongsTo('App/Models/Teacher') //เอาเขามาจอย
-    }  
+    }
+    
+    enrollment(){
+        return this.hasMany('App/Models/Enrollment') 
+    }
+
     
 
 
