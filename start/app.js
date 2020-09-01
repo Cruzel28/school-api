@@ -15,7 +15,9 @@ const providers = [
   // '@adonisjs/auth/providers/AuthProvider', //ตัวจัดการเรื่องแอพ ในขั้นการพัฒนาถ้าไม่อยากให้พัง คอมเม้นต์ไว้ก่อน
   '@adonisjs/bodyparser/providers/BodyParserProvider',
   '@adonisjs/cors/providers/CorsProvider',
-  '@adonisjs/lucid/providers/LucidProvider'
+  '@adonisjs/lucid/providers/LucidProvider',
+  '@adonisjs/validator/providers/ValidatorProvider'
+
 ]
 
 /*
