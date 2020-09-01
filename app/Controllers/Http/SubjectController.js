@@ -1,6 +1,7 @@
 'use strict'
 
 const Database = use('Database')
+const Validator = use('Validator')
 
 function numberTypeParamValidator(number){
     if (Number.isNaN(parseInt(number)))
@@ -37,12 +38,15 @@ class SubjectController {
       async store({request}){
         const { title, teacher_id} = request.body
   
-        const missingKeys = []
-        if(!title) missingKeys.push('title')
-        if(!teacher_id) missingKeys.push('teacher_id')
+        const rules = {
+          title:'required|unique:teachers,title',
+          teacher_id:'required',
+        }
   
-        if(missingKeys.length)
-           return {status: 422, error: `${missingKeys} is missing.`, data: undefined}
+        const validation = await Validator.validate(request.body,rules)
+  
+        if(validation.fails())
+        return {status: 422, error: validation.messages(), data: undefined}
   
         const subjects = await Database
               .table('subjects')
