@@ -35,7 +35,7 @@ Route.group(()=> {
   // Route.delete('/teachers/:id','TeacherController.destroy')
 
   Route.resource('/subjects','SubjectController')
-  Route.get('/subjects/:id/teacher','SubjectController.showTeacher')
+ 
 
   Route.resource('/students','StudentController')
   
