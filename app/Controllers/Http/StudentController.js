@@ -41,19 +41,21 @@ class StudentController {
 
       async store({request}){
         const { first_name, last_name, email,password,group_id} = request.body
-        const hashPassword = await Hash.make(password)
+        
+
         const rules = {
           first_name:'required',
           last_name:'required',
-          email:'required|email|unique:teachers,email',
-          password:'required|min:8'           
+          email:'required|email|unique:students,email',
+          password:'required|unique:students,password',     
+          group_id: 'required'      
         }
   
         const validation = await Validator.validate(request.body,rules)
   
         if(validation.fails())
-        return {status: 422, error: validation.message(), data: undefined}
-        
+        return {status: 422, error: validation.messages(), data: undefined}
+        const hashPassword = await Hash.make(password)
         const students = await Database
               .table('students')
               .insert({first_name, last_name, email,password:hashPassword,group_id})
