@@ -28,19 +28,15 @@ class StudentController {
       }
 
       async show ({request}){
-        const { id } = request.params
+        const { id } = request.body
+        const student = await Student.find(id)
   
        const validatedValue = numberTypeParamValidator(id)
        if(validatedValue.error) 
           return { status: 500, 
                   error: validatedValue.error,  
                   data: undefined}
-          
-        const student = await Database
-        .select('*')
-        .from('students')
-        .where('student_id',id)
-        .first()
+  
   
         return {status: 200, 
                 error: undefined, 
@@ -49,7 +45,7 @@ class StudentController {
 
       async store({request}){
         const { first_name, last_name, email,password,group_id} = request.body
-        
+        const student = await Student.create({ first_name, last_name, email,password,group_id})
 
         const rules = {
           first_name:'required',
@@ -62,13 +58,18 @@ class StudentController {
         const validation = await Validator.validate(request.body,rules)
   
         if(validation.fails())
-        return {status: 422, error: validation.messages(), data: undefined}
+        return {status: 422, 
+          error: validation.messages(), 
+          data: undefined}
+
         const hashPassword = await Hash.make(password)
         const students = await Database
               .table('students')
               .insert({first_name, last_name, email,password:hashPassword,group_id})
   
-        return {status: 200, error: undefined, data: {first_name,last_name,email,password:hashPassword,group_id}}
+        return {status: 200, 
+          error: undefined, 
+          data: students}
       }
 
       async update({request}){
