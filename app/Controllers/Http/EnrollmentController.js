@@ -62,6 +62,37 @@ class EnrollmentController {
                 error: undefined, 
                 data: {mark,student_id,subject_id}}
       } 
+
+      async update({request}){
+        const {body,params} = request
+        const {id} = params
+        const {mark, student_id, subject_id} = body
+  
+       const EnrollmentID = await Database
+        .table('enrollments')
+        .where({enrollment_id: id})
+        .update({mark, student_id, subject_id})
+        
+  
+        const enrollment = await Database
+        .table('enrollments')
+        .where({enrollment_id: enrollmentID})
+        .first()
+  
+        return {status: 200, error: undefined, 
+          data: {mark, student_id, subject_id}}
+      }
+  
+      async destroy ({request}){
+        const {id} = request.params
+  
+        const deletedEnrollment = await Database
+        .table('enrollments')
+        .where({enrollment_id:id})
+        .delete()
+  
+        return {status: 200, error: undefined, data: {message: 'success'}}
+      }
   
 
 }

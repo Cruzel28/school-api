@@ -45,6 +45,9 @@ class TeacherController {
       if(!last_name) missingKeys.push('last_name')
       if(!email) missingKeys.push('email')
 
+      new RegExp(/hello/gi).test("hello World")
+      
+
       if(missingKeys.length)
          return {status: 422, error: `${missingKeys} is missing.`, data: undefined}
 
