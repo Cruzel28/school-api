@@ -1,7 +1,7 @@
 'use strict'
 
 const Database = use('Database')
-
+const Validator = use('Validator')
 
 function numberTypeParamValidator(number){
     if (Number.isNaN(parseInt(number)))
@@ -42,17 +42,16 @@ class EnrollmentController {
   
       async store({request}){
         const { mark, student_id, subject_id} = request.body
-        
+        const rules = {
+          mark:'required',
+          student_id:'required',
+          subject_id:'required' 
+        }
   
-        const missingKeys = []
-        if(!mark) missingKeys.push('mark')
-        if(!student_id) missingKeys.push('student_id')
-        if(!subject_id) missingKeys.push('subject_id')
+        const validation = await Validator.validate(request.body,rules)
   
-        if(missingKeys.length)
-           return {status: 422, 
-            error: `${missingKeys} is missing.`, 
-            data: undefined}
+        if(validation.fails())
+        return {status: 422, error: validation.messages(), data: undefined}
   
         const enrollment = await Database
               .table('enrollments')
