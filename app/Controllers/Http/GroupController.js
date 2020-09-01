@@ -2,6 +2,7 @@
 
 const Database = use('Database')
 const Validator = use('Validator')
+const Group = use('App/Models/Group')
 
 function numberTypeParamValidator(number){
     if (Number.isNaN(parseInt(number)))
@@ -21,19 +22,13 @@ class GroupController {
 
       async show ({request}){
         const { id } = request.params
+        const gruop = await Group.find(id)
   
        const validatedValue = numberTypeParamValidator(id)
        if(validatedValue.error) 
           return { status: 500, 
                    error: validatedValue.error, 
                    data: undefined}
-        
-
-        const group = await Database
-        .select('*')
-        .from('groups')
-        .where('group_id',id)
-        .first()
   
         return {status: 200, 
                 error: undefined, 

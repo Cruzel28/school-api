@@ -100,6 +100,7 @@ class SubjectController {
                 error: validation.messages(), 
                 data: undefined}
        
+                
         return {status: 200, 
                   error: undefined, 
                   data: subject}
