@@ -2,6 +2,7 @@
 
 const Database = use('Database')
 //const Hash = use('Hash')
+const Validator = use('Validator')
 
 function numberTypeParamValidator(number){
   if (Number.isNaN(parseInt(number)))
@@ -38,24 +39,34 @@ class TeacherController {
 
     async store({request}){
       const { first_name, last_name, email} = request.body
-      //const hashPassword = await Hash.make(password)
+      const rules = {
+        first_name:'required',
+        last_name:'required',
+        email:'required|email|unique:teachers,email' //หลายเคสให้เชื่อมด้วยไปป์
+                         //  unique:table,collum            
+      }
 
-      const missingKeys = []
-      if(!first_name) missingKeys.push('first_name')
-      if(!last_name) missingKeys.push('last_name')
-      if(!email) missingKeys.push('email')
+      const validation = await Validator.validate(request.body,rules)
 
-      new RegExp(/hello/gi).test("hello World")
+      if(validation.fails())
+      return {status: 422, error: validation.message(), data: undefined}
+
+      // const missingKeys = []
+      // if(!first_name) missingKeys.push('first_name')
+      // if(!last_name) missingKeys.push('last_name')
+      // if(!email) missingKeys.push('email')
+
+      // // new RegExp(/hello/gi).test("hello World")
       
 
-      if(missingKeys.length)
-         return {status: 422, error: `${missingKeys} is missing.`, data: undefined}
+      // if(missingKeys.length)
+      //    return {status: 422, error: `${missingKeys} is missing.`, data: undefined}
 
-      const teacher = await Database
-            .table('teachers')
-            .insert({first_name, last_name, email})
+      // const teacher = await Database
+      //       .table('teachers')
+      //       .insert({first_name, last_name, email})
 
-      return {status: 200, error: undefined, data: {first_name,last_name,email}}
+      // return {status: 200, error: undefined, data: {first_name,last_name,email}}
     }
 
     async update({request}){

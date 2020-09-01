@@ -2,6 +2,7 @@
 
 const Database = use('Database')
 const Hash = use('Hash')
+const Validator = use('Validator')
 
 function numberTypeParamValidator(number){
     if (Number.isNaN(parseInt(number)))
@@ -41,17 +42,18 @@ class StudentController {
       async store({request}){
         const { first_name, last_name, email,password,group_id} = request.body
         const hashPassword = await Hash.make(password)
+        const rules = {
+          first_name:'required',
+          last_name:'required',
+          email:'required|email|unique:teachers,email',
+          password:'required|min:8'           
+        }
   
-        const missingKeys = []
-        if(!first_name) missingKeys.push('first_name')
-        if(!last_name) missingKeys.push('last_name')
-        if(!email) missingKeys.push('email')
-        if(!password) missingKeys.push('password')
-        if(!group_id) missingKeys.push('group_id')
+        const validation = await Validator.validate(request.body,rules)
   
-        if(missingKeys.length)
-           return {status: 422, error: `${missingKeys} is missing.`, data: undefined}
-  
+        if(validation.fails())
+        return {status: 422, error: validation.message(), data: undefined}
+        
         const students = await Database
               .table('students')
               .insert({first_name, last_name, email,password:hashPassword,group_id})
