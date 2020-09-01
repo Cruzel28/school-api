@@ -2,6 +2,7 @@
 
 const Database = use('Database')
 const Validator = use('Validator')
+const Enrollment = use('App/Models/Enrollment')
 
 function numberTypeParamValidator(number){
     if (Number.isNaN(parseInt(number)))
@@ -13,26 +14,28 @@ function numberTypeParamValidator(number){
 class EnrollmentController {
 
     async index(){
-        const enrollments = await Database.table('enrollments')
-  
-        return {status: 200, error: undefined, data: enrollments || {}}
+      const {references = undefined} = request.qs
+      const enrollments = Enrollment.query()
+
+      if (references){
+      const extractedReferences = references.split(",")
+      subjects.with(extractedReferences)
+      }
+        return {status: 200, 
+          error: undefined, 
+          data: enrollments.fetch()}
       }
 
       async show ({request}){
-        const { id } = request.params
+        const { id } = request.body
+        const enrollment = await Enrollment.find(id)
   
        const validatedValue = numberTypeParamValidator(id)
+
        if(validatedValue.error) 
           return { status: 500, 
                    error: validatedValue.error, 
                    data: undefined}
-        
-
-        const enrollment = await Database
-        .select('*')
-        .from('enrollments')
-        .where('enrollment_id',id)
-        .first()
   
         return {status: 200, 
                 error: undefined, 
@@ -42,6 +45,8 @@ class EnrollmentController {
   
       async store({request}){
         const { mark, student_id, subject_id} = request.body
+        const enrollment = await Subject.create({ mark, student_id, subject_id})
+
         const rules = {
           mark:'required',
           student_id:'required',
@@ -51,15 +56,13 @@ class EnrollmentController {
         const validation = await Validator.validate(request.body,rules)
   
         if(validation.fails())
-        return {status: 422, error: validation.messages(), data: undefined}
-  
-        const enrollment = await Database
-              .table('enrollments')
-              .insert({mark, student_id, subject_id})
+        return {status: 422, 
+          error: validation.messages(), 
+          data: undefined}
   
         return {status: 200, 
                 error: undefined, 
-                data: {mark,student_id,subject_id}}
+                data: enrollment}
       } 
 
       async update({request}){
