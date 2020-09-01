@@ -35,14 +35,12 @@ Route.group(()=> {
   // Route.delete('/teachers/:id','TeacherController.destroy')
 
   Route.resource('/subjects','SubjectController')
-  
+  Route.get('/subjects/:id/teacher','SubjectController.showTeacher')
+
   Route.resource('/students','StudentController')
   
   Route.resource('/enrollments','EnrollmentController')
-
+            
   Route.resource('/groups','GroupController')
-
-
-
 
 }).prefix('api/v1')
