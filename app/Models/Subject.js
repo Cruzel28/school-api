@@ -16,14 +16,19 @@ class Subject extends Model {
     }
 
     teacher(){
-        return this.belongsTo('App/Models/Teacher') //เอาเขามาจอย
+        return this.belongsTo('App/Models/Teacher') //จอยเขา 1 or 0
     }
     
     enrollment(){
         return this.hasMany('App/Models/Enrollment') 
     }
 
-    
+    student(){
+        return this
+        .belongsToMany('App/Models/Student')
+        //Many to Many
+        .pivotModel('App/Models/Enrollment') //ตัวควบคุม
+    }
 
 
 }
