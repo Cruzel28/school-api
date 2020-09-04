@@ -24,6 +24,9 @@ class Student extends Model {
         return this.belongsTo('App/Models/Group')
     }
 
+    subject(){
+        return this.hasMany('App/Models/Subject')         
+    }
 
 }
 
