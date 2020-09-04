@@ -1,7 +1,7 @@
 'use strict'
 
 const Database = use('Database')
-//const Hash = use('Hash')
+const Hash = use('Hash')
 const Validator = use('Validator')
 const Teacher =use('App/Models/Teacher')
 
@@ -47,17 +47,21 @@ class TeacherController {
     }
 
     async store({request}){
-      const { first_name, last_name, email} = request.body
-      const teacher = await Teacher.create({first_name,last_name,email})
+
+      
+      const { first_name, last_name, email,password} = request.body
+      // const teacher = await Teacher.create({
+      //   first_name,last_name,email,password})
       
       const rules = {
         first_name:'required',
         last_name:'required',
-        email:'required|email|unique:teachers,email' //หลายเคสให้เชื่อมด้วยไปป์
-                         //  unique:table,collum            
+        email:'required|email|unique:teachers,email', //หลายเคสให้เชื่อมด้วยไปป์
+                         //  unique:table,collum   
+        password: 'required|unique:teachers,password'         
       }
 
-      const validation = await Validator.validate(request.body,rules)
+      const validation = await Validator.validate({first_name,last_name,email,password},rules)
 
       if(validation.fails())
       return {status: 422, 
@@ -74,10 +78,10 @@ class TeacherController {
 
       // if(missingKeys.length)
       //    return {status: 422, error: `${missingKeys} is missing.`, data: undefined}
+     const teacher = await Teacher
+     .create({first_name,last_name,email,password})
 
-      return {status: 200, 
-        error: undefined, 
-        data: teacher}
+      return {status: 200,error: undefined, data: teacher}
     }
 
     async update({request}){
