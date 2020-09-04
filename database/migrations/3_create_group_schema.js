@@ -9,6 +9,7 @@ class CreateGroupSchema extends Schema {
       table.increments('group_id') //(AUTO INCREMENT) defilt -> id
      
       table.string('name',100).unique() //Declarative Style
+      table.timestamps()
 
     })
   }

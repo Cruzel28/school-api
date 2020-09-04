@@ -9,8 +9,8 @@ class CreateSubjectSchema extends Schema {
       
       table.increments('subject_id')
       table.string('title',120).notNullable().unique()
-      table.integer('teacher_id').notNullable().unique().unsigned()
-      
+      table.integer('teacher_id').notNullable().unsigned()
+      table.timestamps()
 
       table
       .foreign('teacher_id')
