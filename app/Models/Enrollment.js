@@ -23,8 +23,6 @@ class Enrollment extends Model {
     subject(){
         return this.belongsTo('App/Models/Subject') 
     }
-
-
 }
 
 module.exports = Enrollment
